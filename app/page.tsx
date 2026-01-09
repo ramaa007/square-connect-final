@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, CheckCircle2, Phone, Mail, MapPin, Star, Zap, Building2, Landmark, Users2, ShieldCheck, Briefcase } from "lucide-react";
+import { ArrowRight, CheckCircle2, Phone, Mail, Star, Zap, Building2, Landmark, ShieldCheck, Briefcase, Globe, Users2 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,19 +11,10 @@ export default function HomePage() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Word-by-word reveal for headlines
       gsap.utils.toArray<HTMLElement>(".reveal-text").forEach((text) => {
         gsap.from(text, {
-          scrollTrigger: { trigger: text, start: "top 90%" },
-          y: 30, opacity: 0, duration: 1, ease: "power3.out"
-        });
-      });
-
-      // 2. Fade-up stagger for cards
-      gsap.utils.toArray<HTMLElement>(".stagger-container").forEach((container) => {
-        gsap.from(container.querySelectorAll(".stagger-item"), {
-          scrollTrigger: { trigger: container, start: "top 85%" },
-          y: 40, opacity: 0, duration: 0.8, stagger: 0.2, ease: "power3.out"
+          scrollTrigger: { trigger: text, start: "top 92%" },
+          y: 30, opacity: 0, duration: 0.8, ease: "power3.out"
         });
       });
     }, containerRef);
@@ -31,190 +22,138 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-white">
+    <div ref={containerRef} style={{ backgroundColor: '#ffffff', color: '#383838' }}>
       
-      {/* SECTION 1 – HERO */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden bg-[#F5F5F7]">
-        <div className="max-w-7xl mx-auto text-center z-10">
-          <p className="reveal-text font-bold tracking-[0.3em] text-[#DFA528] text-xs mb-6 uppercase">Square Connect</p>
-          <h1 className="reveal-text text-6xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-8 text-[#383838]">
-            One Group.<br/>All Business Solutions.
+      {/* 1. HERO */}
+      <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', backgroundColor: '#F5F5F7', overflow: 'hidden' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>
+          <p className="reveal-text" style={{ fontWeight: 'bold', letterSpacing: '0.3em', color: '#DFA528', fontSize: '12px', marginBottom: '24px', textTransform: 'uppercase' }}>Square Connect Advisory Group</p>
+          <h1 className="reveal-text" style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '900', letterSpacing: '-0.05em', lineHeight: '0.9', marginBottom: '32px' }}>
+            One Group.<br/>All Solutions.
           </h1>
-          <p className="reveal-text text-xl md:text-2xl text-[#5E5E5E] mb-12 max-w-3xl mx-auto">Your Trusted Advisory Partner</p>
-          <div className="reveal-text flex flex-wrap justify-center gap-4 mb-8 text-sm font-semibold text-[#383838] opacity-60 uppercase tracking-widest">
-            <span>Mortgage</span> • <span>Accounting</span> • <span>Legal</span> • <span>Real Estate</span> • <span>Commercial</span>
-          </div>
-          <button className="reveal-text bg-[#383838] text-white px-10 py-5 rounded-full font-bold flex items-center gap-3 mx-auto hover:bg-black transition-all">
-            Explore Expertise <ArrowRight size={20} />
+          <p className="reveal-text" style={{ fontSize: '1.25rem', opacity: 0.7, marginBottom: '48px' }}>Integrated Mortgage, Legal, and Financial Strategy.</p>
+          <button className="reveal-text" style={{ backgroundColor: '#383838', color: 'white', padding: '20px 40px', borderRadius: '50px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
+            Explore Expertise
           </button>
         </div>
       </section>
 
-      {/* SECTION 2 – INTEGRATED VISION */}
-      <section className="py-32 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+      {/* 2. VISION */}
+      <section style={{ padding: '120px 24px', maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '80px', alignItems: 'center' }}>
         <div className="reveal-text">
-          <h2 className="text-5xl font-bold mb-8 text-[#383838]">Advisory Services That Work Together for You</h2>
-          <p className="text-xl text-gray-500 leading-relaxed">We integrate finance, legal, and property expertise to provide streamlined solutions under one roof.</p>
+          <h2 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '32px' }}>Integrated Intelligence</h2>
+          <p style={{ fontSize: '1.1rem', lineHeight: '1.8', opacity: 0.6 }}>We bring together every professional vertical to ensure your wealth is protected and your growth is seamless.</p>
         </div>
-        <div className="rounded-[3rem] overflow-hidden bg-[#F5F5F7] h-[500px]">
-           <div className="w-full h-full bg-slate-300 animate-pulse flex items-center justify-center text-gray-400 italic">Modern Advisory Space Image</div>
-        </div>
-      </section>
-
-      {/* SECTION 3 – STATS */}
-      <section className="py-24 bg-[#383838] text-white rounded-[4rem] mx-4">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-          <div className="reveal-text">
-            <h2 className="text-7xl font-bold text-[#DFA528] mb-2">5+ Years</h2>
-            <p className="text-gray-400 uppercase tracking-widest text-xs">Industry Excellence</p>
-          </div>
-          <div className="reveal-text">
-            <h2 className="text-7xl font-bold text-[#DFA528] mb-2">12+</h2>
-            <p className="text-gray-400 uppercase tracking-widest text-xs">Industries Served</p>
-          </div>
-          <div className="reveal-text">
-            <h2 className="text-7xl font-bold text-[#DFA528] mb-2">1 Contact</h2>
-            <p className="text-gray-400 uppercase tracking-widest text-xs">Unified Journey</p>
-          </div>
+        <div style={{ backgroundColor: '#F5F5F7', borderRadius: '40px', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontStyle: 'italic', color: '#ccc' }}>
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '40px' }} alt="Vision" />
         </div>
       </section>
 
-      {/* SECTION 4 – VALUES (TICKER) */}
-      <section className="py-16 overflow-hidden border-y border-gray-100">
-        <div className="flex space-x-12 animate-marquee whitespace-nowrap text-xl font-bold uppercase tracking-tighter text-[#383838] opacity-40">
-          {["Strategic Alignment ✱", "Professional Guidance ✱", "Holistic Vision ✱", "Collaborative Solutions ✱", "Future Pathways ✱", "Tailored Roadmaps ✱"].map((val, i) => (
-            <span key={i} className="hover:text-[#DFA528] transition-colors">{val}</span>
-          ))}
-          {/* Duplicate for seamless loop */}
-          {["Strategic Alignment ✱", "Professional Guidance ✱", "Holistic Vision ✱", "Collaborative Solutions ✱", "Future Pathways ✱", "Tailored Roadmaps ✱"].map((val, i) => (
-            <span key={i+'d'} className="hover:text-[#DFA528] transition-colors">{val}</span>
-          ))}
+      {/* 3. STATS */}
+      <section style={{ margin: '0 16px', padding: '100px 24px', backgroundColor: '#383838', color: 'white', borderRadius: '64px' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '48px', textAlign: 'center' }}>
+          <div><h2 style={{ fontSize: '4.5rem', fontWeight: 'bold', color: '#DFA528' }}>5+</h2><p style={{ letterSpacing: '0.2em', fontSize: '10px', opacity: 0.5 }}>YEARS OF EXCELLENCE</p></div>
+          <div><h2 style={{ fontSize: '4.5rem', fontWeight: 'bold', color: '#DFA528' }}>12+</h2><p style={{ letterSpacing: '0.2em', fontSize: '10px', opacity: 0.5 }}>INDUSTRIES SERVED</p></div>
+          <div><h2 style={{ fontSize: '4.5rem', fontWeight: 'bold', color: '#DFA528' }}>1</h2><p style={{ letterSpacing: '0.2em', fontSize: '10px', opacity: 0.5 }}>UNIFIED PARTNER</p></div>
         </div>
       </section>
 
-      {/* SECTION 5 – ABOUT PREVIEW */}
-      <section className="py-32 bg-[#F5F5F7] px-6">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20">
-          <div className="reveal-text">
-            <h2 className="text-5xl font-bold mb-8 leading-tight text-[#383838]">A smarter way to manage your world.</h2>
-            <p className="text-xl text-gray-500 mb-10">Square Connect removes the burden of coordinating multiple professionals. One advisor. One journey.</p>
-          </div>
-          <div className="stagger-container grid grid-cols-2 gap-6">
-            {["Proactive", "Responsive", "Data-Driven", "Accountable"].map((point) => (
-              <div key={point} className="stagger-item p-8 bg-white rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <CheckCircle2 className="text-[#DFA528]" />
-                <span className="font-bold text-[#383838]">{point}</span>
+      {/* 4. VALUES TICKER */}
+      <div style={{ padding: '60px 0', overflow: 'hidden', borderBottom: '1px solid #eee' }}>
+        <div className="animate-marquee" style={{ fontSize: '1.5rem', fontWeight: '900', textTransform: 'uppercase', opacity: 0.2, display: 'flex', gap: '40px', whiteSpace: 'nowrap' }}>
+           <span>Strategic ✱ Professional ✱ Holistic ✱ Collaborative ✱ Strategic ✱ Professional ✱ Holistic ✱ Collaborative</span>
+        </div>
+      </div>
+
+      {/* 5. ABOUT PREVIEW */}
+      <section style={{ padding: '120px 24px', backgroundColor: '#F5F5F7' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '60px' }}>
+          <h2 style={{ fontSize: '3.5rem', fontWeight: 'bold', lineHeight: '1.1' }}>A smarter way to manage your world.</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            {["Proactive", "Responsive", "Data-Driven", "Accountable"].map(v => (
+              <div key={v} style={{ backgroundColor: 'white', padding: '30px', borderRadius: '24px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <CheckCircle2 style={{ color: '#DFA528' }} /> {v}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION 6 – SERVICES GRID */}
-      <section className="py-32 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-20 reveal-text">
-          <h2 className="text-5xl font-bold mb-4 italic text-[#383838]">Integrated Services</h2>
-          <div className="w-24 h-1 bg-[#DFA528] mx-auto"></div>
-        </div>
-        <div className="stagger-container grid md:grid-cols-3 gap-8">
+      {/* 6. SERVICES GRID */}
+      <section style={{ padding: '120px 24px', maxWidth: '1280px', margin: '0 auto' }}>
+        <h2 style={{ fontSize: '3rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '80px' }}>Our Services</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
           {[
             { t: "Mortgage & Finance", i: <Landmark /> },
             { t: "Tax & Accounting", i: <Building2 /> },
             { t: "Legal Services", i: <ShieldCheck /> },
             { t: "Real Estate Advisory", i: <Briefcase /> },
-            { t: "Commercial Finance", i: <Landmark /> },
-            { t: "Digital Services", i: <Zap /> }
-          ].map((s, idx) => (
-            <div key={idx} className="stagger-item group p-12 bg-white border border-gray-100 rounded-[3rem] hover:shadow-2xl hover:shadow-[#DFA528]/10 transition-all duration-500">
-              <div className="mb-8 w-14 h-14 bg-[#F5F5F7] rounded-2xl flex items-center justify-center group-hover:bg-[#DFA528] group-hover:text-white transition-colors">{s.i}</div>
-              <h3 className="text-2xl font-bold mb-4 text-[#383838]">{s.t}</h3>
-              <p className="text-gray-500 mb-8">Bespoke advisory tailored to your unique growth journey.</p>
-              <button className="text-[#DFA528] font-bold flex items-center gap-2 group">Start Conversation <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform"/></button>
+            { t: "Commercial Finance", i: <Zap /> },
+            { t: "Digital Services", i: <Globe /> }
+          ].map((s, i) => (
+            <div key={i} style={{ padding: '50px', backgroundColor: '#F5F5F7', borderRadius: '40px', transition: 'all 0.3s' }}>
+              <div style={{ marginBottom: '32px', color: '#DFA528' }}>{s.i}</div>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '16px' }}>{s.t}</h3>
+              <p style={{ opacity: 0.6 }}>Bespoke strategy designed for your specific journey.</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SECTION 7 – WHY CHOOSE US */}
-      <section className="py-32 px-6 bg-[#383838] text-white rounded-[4rem] mx-4 mb-32">
-        <div className="max-w-7xl mx-auto text-center mb-20 reveal-text">
-          <h2 className="text-5xl font-bold">Why Choose Us</h2>
-        </div>
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 stagger-container">
-          {["Integrated Intelligence", "Proactive Speed", "Vetted Excellence", "Long-Term Vision"].map((why) => (
-            <div key={why} className="stagger-item p-8 border border-white/10 rounded-3xl text-center hover:bg-white/5">
-              <Star className="mx-auto mb-4 text-[#DFA528]" />
-              <h4 className="font-bold text-lg leading-tight">{why}</h4>
+      {/* 7. WHY CHOOSE US */}
+      <section style={{ margin: '0 16px', padding: '120px 24px', backgroundColor: '#383838', color: 'white', borderRadius: '64px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '60px' }}>Why Choose Us</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
+          {["Vetted Excellence", "Proactive Speed", "Long-term Vision", "Integrated Logic"].map(w => (
+            <div key={w} style={{ padding: '40px', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '32px' }}>
+              <Star style={{ color: '#DFA528', marginBottom: '16px' }} />
+              <p style={{ fontWeight: 'bold' }}>{w}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SECTION 8 – FOUNDER PREVIEW */}
-      <section className="py-32 px-6 max-w-7xl mx-auto bg-[#F5F5F7] rounded-[4rem] mb-32">
-        <div className="flex flex-col md:flex-row items-center gap-20 p-12">
-          <div className="w-80 h-80 bg-gray-300 rounded-[3rem] overflow-hidden border-4 border-white shadow-xl flex-shrink-0">
-             <div className="w-full h-full bg-slate-400 flex items-center justify-center text-white italic">Founder Portrait</div>
-          </div>
-          <div className="reveal-text">
-            <p className="text-[#DFA528] font-bold tracking-widest mb-4">LEAD ADVISOR</p>
-            <h2 className="text-6xl font-bold mb-6 text-[#383838] leading-none">BHAVIN PATEL</h2>
-            <p className="text-3xl italic text-gray-500 mb-10 leading-relaxed">
-              "I founded Square Connect to revolutionise the way people build wealth."
-            </p>
-            <button className="bg-[#383838] text-white px-10 py-5 rounded-full font-bold">Read Bhavin's Story</button>
+      {/* 8. FOUNDER */}
+      <section style={{ padding: '120px 24px', maxWidth: '1280px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '80px', alignItems: 'center', backgroundColor: '#F5F5F7', padding: '60px', borderRadius: '64px' }}>
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80" style={{ width: '300px', height: '400px', objectFit: 'cover', borderRadius: '40px' }} alt="Founder" />
+          <div style={{ flex: 1 }}>
+            <p style={{ color: '#DFA528', fontWeight: 'bold', letterSpacing: '0.2em', fontSize: '12px' }}>LEAD ADVISOR</p>
+            <h2 style={{ fontSize: '4rem', fontWeight: '900', margin: '16px 0' }}>BHAVIN PATEL</h2>
+            <p style={{ fontSize: '1.5rem', fontStyle: 'italic', opacity: 0.6 }}>"I founded Square Connect to revolutionise wealth building through integration."</p>
           </div>
         </div>
       </section>
 
-      {/* SECTION 9 – INDUSTRIES */}
-      <section className="py-20 px-6 max-w-7xl mx-auto text-center">
-        <h4 className="text-xs font-bold text-[#DFA528] uppercase tracking-[0.4em] mb-12 reveal-text">Industries We Support</h4>
-        <div className="flex flex-wrap justify-center gap-x-12 gap-y-8 text-xl font-medium text-gray-400 reveal-text">
-          {["Childcare", "NDIS", "Medical", "Construction", "Real Estate", "Tech", "Retail", "Hospitality", "Professional", "Renewable"].map(ind => (
-            <span key={ind} className="hover:text-[#383838] transition-colors">{ind}</span>
-          ))}
+      {/* 9. INDUSTRIES */}
+      <section style={{ padding: '100px 24px', textAlign: 'center', opacity: 0.4 }}>
+        <p style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.4em', marginBottom: '40px' }}>INDUSTRIES WE SUPPORT</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '40px', fontWeight: 'bold' }}>
+          {["Childcare", "Medical", "NDIS", "Construction", "Real Estate", "Professional"].map(ind => <span key={ind}>{ind}</span>)}
         </div>
       </section>
 
-      {/* SECTION 10 – CLIENT FEEDBACK */}
-      <section className="py-32 overflow-hidden bg-white">
-        <div className="text-center mb-16 reveal-text">
-          <h2 className="text-4xl font-bold italic text-[#383838]">Client Experience</h2>
-        </div>
-        <div className="flex space-x-8 animate-marquee">
-          {[
-            {n: "Omkar Solanki", t: "Fantastic experience… saved us countless hours."},
-            {n: "Harshad Pathan", t: "Professional, knowledgeable, proactive."},
-            {n: "Poojan Patel", t: "Highly recommended."},
-            {n: "Vishal Patel", t: "Professional & Timely."},
-            {n: "Jaydeep Tank", t: "Transformed our finances."}
-          ].map((rev, i) => (
-            <div key={i} className="min-w-[400px] p-12 bg-[#F5F5F7] rounded-[3rem] flex flex-col justify-between">
-              <p className="text-xl text-[#383838] italic mb-8">“{rev.t}”</p>
-              <p className="font-bold text-[#DFA528] uppercase tracking-widest text-xs">— {rev.n}</p>
+      {/* 10. FEEDBACK */}
+      <section style={{ padding: '120px 0', backgroundColor: '#fff', overflow: 'hidden' }}>
+        <div className="animate-marquee" style={{ display: 'flex', gap: '32px' }}>
+          {[1,2,3,4,5].map(n => (
+            <div key={n} style={{ minWidth: '400px', padding: '60px', backgroundColor: '#F5F5F7', borderRadius: '40px' }}>
+              <p style={{ fontSize: '1.2rem', fontStyle: 'italic', marginBottom: '24px' }}>"Professional, knowledgeable, and proactive. Transformed our business finances."</p>
+              <p style={{ fontWeight: 'bold', color: '#DFA528' }}>— Client {n}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* SECTION 11 – CTA / FOOTER */}
-      <footer className="pt-32 pb-12 px-6 bg-[#F5F5F7] rounded-t-[5rem]">
-        <div className="max-w-7xl mx-auto text-center mb-24 reveal-text">
-          <h2 className="text-7xl font-bold mb-12 tracking-tighter text-[#383838]">Ready to Connect?</h2>
-          <div className="flex flex-wrap justify-center gap-10">
-             <div className="flex items-center gap-4 text-2xl font-bold text-[#383838]">
-               <Phone className="text-[#DFA528]" /> 0425 859 901
-             </div>
-             <div className="flex items-center gap-4 text-2xl font-bold text-[#383838]">
-               <Mail className="text-[#DFA528]" /> info@squareconnectgroup.com
-             </div>
-          </div>
+      {/* 11. CTA / FOOTER */}
+      <footer style={{ padding: '120px 24px', backgroundColor: '#F5F5F7', borderRadius: '64px 64px 0 0', textAlign: 'center' }}>
+        <h2 style={{ fontSize: '5rem', fontWeight: 'bold', marginBottom: '64px' }}>Ready to Connect?</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '60px', marginBottom: '100px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '1.5rem', fontWeight: 'bold' }}><Phone style={{ color: '#DFA528' }} /> 0425 859 901</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '1.5rem', fontWeight: 'bold' }}><Mail style={{ color: '#DFA528' }} /> info@squareconnectgroup.com</div>
         </div>
-        
-        <div className="max-w-7xl mx-auto border-t border-gray-200 pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">
-          <p>© 2026 Square Connect Advisory Group</p>
-          <p className="max-w-md text-center md:text-right">Square Connect Advisory Group operates as a strategic advisory and referral consultancy. We do not hold an ACL or AFSL in our own right.</p>
+        <div style={{ paddingTop: '60px', borderTop: '1px solid #ddd', fontSize: '10px', opacity: 0.4 }}>
+          © 2026 Square Connect Advisory Group. Independent Referral & Advisory.
         </div>
       </footer>
 

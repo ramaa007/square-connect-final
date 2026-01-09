@@ -1,35 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* FORCED STYLES FOR HOSTINGER */
-:root {
-  --gold: #DFA528;
-  --charcoal: #383838;
-  --apple-grey: #F5F5F7;
+@theme {
+  --color-gold: #DFA528;
+  --color-charcoal: #383838;
+  --color-appleGrey: #F5F5F7;
 }
 
 body {
   background-color: white !important;
   color: #383838 !important;
   margin: 0;
-  padding: 0;
   font-family: sans-serif;
 }
 
-/* Hard-coded background classes */
-.bg-appleGrey { background-color: #F5F5F7 !important; }
-.bg-charcoal { background-color: #383838 !important; }
 .bg-gold { background-color: #DFA528 !important; }
 .text-gold { color: #DFA528 !important; }
+.bg-charcoal { background-color: #383838 !important; }
+.bg-appleGrey { background-color: #F5F5F7 !important; }
 
-/* Testimonial Animation */
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 40s linear infinite;
+  animation: marquee 30s linear infinite;
 }
