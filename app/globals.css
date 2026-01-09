@@ -3,16 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 56, 56, 56;
-  --background-rgb: 255, 255, 255;
+  --gold: #DFA528;
+  --gold-light: #FBE07A;
+  --charcoal: #383838;
+  --apple-grey: #F5F5F7;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
-  overflow-x: hidden;
-  font-family: sans-serif;
+  color: #383838;
+  background: white;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
+
+/* Force colors if Tailwind fails */
+.bg-gold { background-color: var(--gold) !important; }
+.text-gold { color: var(--gold) !important; }
+.bg-charcoal { background-color: var(--charcoal) !important; }
+.bg-appleGrey { background-color: var(--apple-grey) !important; }
 
 @keyframes marquee {
   0% { transform: translateX(0); }
