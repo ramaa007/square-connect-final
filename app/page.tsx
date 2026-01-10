@@ -2,12 +2,15 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, CheckCircle2, Phone, Mail, Star, Zap, Building2, Landmark, ShieldCheck, Briefcase, Globe, Users2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Phone, Mail, Star, Zap, Building2, Landmark, ShieldCheck, Briefcase, Globe } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HomePage() {
   const containerRef = useRef(null);
+  const gold = "#DFA528";
+  const charcoal = "#383838";
+  const appleGrey = "#F5F5F7";
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -21,11 +24,6 @@ export default function HomePage() {
     return () => ctx.revert();
   }, []);
 
-  // Branding Colors
-  const gold = "#DFA528";
-  const charcoal = "#383838";
-  const appleGrey = "#F5F5F7";
-
   return (
     <div ref={containerRef} style={{ backgroundColor: '#ffffff', color: charcoal, fontFamily: 'sans-serif', margin: 0, padding: 0 }}>
       
@@ -33,17 +31,13 @@ export default function HomePage() {
       <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', backgroundColor: appleGrey, overflow: 'hidden' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
           <p className="reveal-text" style={{ fontWeight: 'bold', letterSpacing: '0.3em', color: gold, fontSize: '12px', marginBottom: '24px', textTransform: 'uppercase' }}>Square Connect Advisory Group</p>
-          <h1 className="reveal-text" style={{ fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: '900', letterSpacing: '-0.05em', lineHeight: '0.9', marginBottom: '32px' }}>
-            One Group.<br/>All Solutions.
-          </h1>
+          <h1 className="reveal-text" style={{ fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: '900', letterSpacing: '-0.05em', lineHeight: '0.9', marginBottom: '32px' }}>One Group.<br/>All Solutions.</h1>
           <p className="reveal-text" style={{ fontSize: '1.25rem', opacity: 0.7, marginBottom: '48px' }}>Your Trusted Advisory Partner for Mortgage, Legal, and Finance.</p>
-          <button className="reveal-text" style={{ backgroundColor: charcoal, color: 'white', padding: '20px 40px', borderRadius: '50px', fontWeight: 'bold', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', margin: '0 auto' }}>
-            Explore Expertise <ArrowRight size={20} />
-          </button>
+          <button style={{ backgroundColor: charcoal, color: 'white', padding: '20px 40px', borderRadius: '50px', fontWeight: 'bold', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', margin: '0 auto' }}>Explore Expertise <ArrowRight size={20} /></button>
         </div>
       </section>
 
-      {/* 2. INTEGRATED VISION */}
+      {/* 2. VISION */}
       <section style={{ padding: '120px 24px', maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '80px', alignItems: 'center' }}>
         <div className="reveal-text">
           <h2 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '32px' }}>Integrated Advisory</h2>
@@ -89,12 +83,9 @@ export default function HomePage() {
         <h2 style={{ fontSize: '3rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '80px' }}>Integrated Services</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
           {[
-            { t: "Mortgage & Finance", i: <Landmark /> },
-            { t: "Tax & Accounting", i: <Building2 /> },
-            { t: "Legal Services", i: <ShieldCheck /> },
-            { t: "Real Estate Advisory", i: <Briefcase /> },
-            { t: "Commercial Finance", i: <Zap /> },
-            { t: "Digital Services", i: <Globe /> }
+            { t: "Mortgage & Finance", i: <Landmark /> }, { t: "Tax & Accounting", i: <Building2 /> },
+            { t: "Legal Services", i: <ShieldCheck /> }, { t: "Real Estate Advisory", i: <Briefcase /> },
+            { t: "Commercial Finance", i: <Zap /> }, { t: "Digital Services", i: <Globe /> }
           ].map((s, i) => (
             <div key={i} style={{ padding: '50px', backgroundColor: appleGrey, borderRadius: '40px' }}>
               <div style={{ marginBottom: '32px', color: gold }}>{s.i}</div>
@@ -118,7 +109,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. FOUNDER PREVIEW */}
+      {/* 8. FOUNDER */}
       <section style={{ padding: '120px 24px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '80px', alignItems: 'center', backgroundColor: appleGrey, padding: '60px', borderRadius: '64px' }}>
           <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80" style={{ width: '300px', height: '400px', objectFit: 'cover', borderRadius: '40px' }} alt="Founder" />
@@ -134,11 +125,11 @@ export default function HomePage() {
       <section style={{ padding: '100px 24px', textAlign: 'center', opacity: 0.4 }}>
         <p style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.4em', marginBottom: '40px' }}>INDUSTRIES WE SUPPORT</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '40px', fontWeight: 'bold' }}>
-          {["Childcare", "Medical", "NDIS", "Construction", "Real Estate", "Tech", "Retail", "Professional"].map(ind => <span key={ind}>{ind}</span>)}
+          {["Childcare", "Medical", "NDIS", "Construction", "Real Estate", "Professional"].map(ind => <span key={ind}>{ind}</span>)}
         </div>
       </section>
 
-      {/* 10. CLIENT FEEDBACK */}
+      {/* 10. FEEDBACK */}
       <section style={{ padding: '120px 0', backgroundColor: '#fff', overflow: 'hidden' }}>
         <div style={{ display: 'flex', gap: '32px', paddingLeft: '24px' }}>
           {[
@@ -161,11 +152,8 @@ export default function HomePage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '1.5rem', fontWeight: 'bold' }}><Phone style={{ color: gold }} /> 0425 859 901</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '1.5rem', fontWeight: 'bold' }}><Mail style={{ color: gold }} /> info@squareconnectgroup.com</div>
         </div>
-        <div style={{ paddingTop: '60px', borderTop: '1px solid #ddd', fontSize: '10px', opacity: 0.4 }}>
-          © 2026 Square Connect Advisory Group. Independent Referral & Advisory.
-        </div>
+        <div style={{ paddingTop: '60px', borderTop: '1px solid #ddd', fontSize: '10px', opacity: 0.4 }}>© 2026 Square Connect Advisory Group.</div>
       </footer>
-
     </div>
   );
 }
