@@ -1,205 +1,587 @@
-"use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { 
-  ArrowRight, CheckCircle2, Phone, Mail, Star, Zap, 
-  Building2, Landmark, ShieldCheck, Briefcase, Globe, ChevronRight 
-} from "lucide-react";
+"use client"
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+import { motion, useScroll, useTransform } from "framer-motion"
+import Image from "next/image"
+import Link from "next/link"
+import { useRef } from "react"
+
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+  },
 }
 
-// PREMIUM DATA CONSTANTS
-const SERVICES = [
-  { n: "01", t: "Mortgage & Finance", d: "Optimizing personal and commercial loans.", i: <Landmark size={40} /> },
-  { n: "02", t: "Tax & Accounting", d: "Precision planning & compliance strategy.", i: <Building2 size={40} /> },
-  { n: "03", t: "Legal Services", d: "Robust counsel for conveyancing & structures.", i: <ShieldCheck size={40} /> },
-  { n: "04", t: "Real Estate", d: "Strategic acquisition and property advice.", i: <Briefcase size={40} /> },
-  { n: "05", t: "Commercial Finance", d: "Tailored funding solutions for business growth.", i: <Zap size={40} /> },
-  { n: "06", t: "Digital Services", d: "Transforming operations with modern technology.", i: <Globe size={40} /> }
-];
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+}
 
-const ADVANTAGES = [
-  { n: "01", t: "Integrated Intelligence", d: "Connecting dots across all professional services." },
-  { n: "02", t: "Proactive Speed", d: "Anticipating and managing processes end-to-end." },
-  { n: "03", t: "Vetted Excellence", d: "Direct access to our pre-vetted elite partner network." },
-  { n: "04", t: "Long-Term Vision", d: "Sustainable strategies for generational growth." }
-];
+const wordReveal = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
+}
 
-export default function HomePage() {
-  const containerRef = useRef(null);
-  const gold = "#DFA528";
-  const charcoal = "#383838";
-  const appleGrey = "#F5F5F7";
+const services = [
+  { num: "01", title: "Mortgage & Finance", desc: "Optimizing personal and commercial loans" },
+  { num: "02", title: "Tax & Accounting", desc: "Precision planning & compliance" },
+  { num: "03", title: "Legal Services", desc: "Robust counsel for conveyancing & structures" },
+  { num: "04", title: "Real Estate", desc: "Strategic acquisition advice" },
+  { num: "05", title: "Commercial Finance", desc: "Tailored funding solutions" },
+  { num: "06", title: "Digital Services", desc: "Transforming business operations with tech" },
+]
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // 1. MASKED REVEAL: Text slides up from an invisible box
-      gsap.utils.toArray<HTMLElement>(".mask-reveal").forEach((el) => {
-        gsap.fromTo(el, 
-          { y: "110%", opacity: 0 },
-          { y: "0%", opacity: 1, duration: 1.4, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 90%" } }
-        );
-      });
+const values = [
+  "Strategic Alignment ✱",
+  "Professional Guidance ✱",
+  "Holistic Vision ✱",
+  "Collaborative Solutions ✱",
+  "Future Pathways ✱",
+  "Tailored Roadmaps ✱",
+]
 
-      // 2. COUNTER ANIMATION: Numbers count up on scroll
-      gsap.utils.toArray<HTMLElement>(".counter").forEach((counter) => {
-        const target = parseInt(counter.getAttribute("data-target") || "0");
-        gsap.to(counter, {
-          innerText: target, duration: 3, ease: "power2.out", 
-          scrollTrigger: { trigger: counter, start: "top 95%" },
-          snap: { innerText: 1 }
-        });
-      });
+const features = [
+  "Proactive: We anticipate needs before they arise",
+  "Responsive: Fast, professional replies always",
+  "Data-driven: Backed by real market insight",
+  "Accountable: One clear point of contact",
+]
 
-      // 3. STAGGER FADE: Cards and items fade up smoothly
-      gsap.utils.toArray<HTMLElement>(".stagger-group").forEach((group) => {
-        gsap.from(group.children, {
-          y: 60, opacity: 0, duration: 1, stagger: 0.15, ease: "expo.out",
-          scrollTrigger: { trigger: group, start: "top 85%" }
-        });
-      });
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
+const advantages = [
+  "01 Integrated Intelligence - We connect the dots across services",
+  "02 Proactive Speed - Anticipate and manage processes end-to-end",
+  "03 Vetted Excellence - Direct access to pre-vetted elite network",
+  "04 Long-Term Vision - Sustainable strategies for generational growth",
+]
+
+const industries = [
+  "Childcare", "NDIS", "Medical", "Construction", "Real Estate",
+  "Tech", "Retail", "Hospitality", "Professional", "Renewable",
+]
+
+const testimonials = [
+  { text: "Fantastic experience… saved us countless hours.", author: "Omkar Solanki" },
+  { text: "Clear, professional advice. Highly recommended.", author: "Harshad Pathan" },
+  { text: "Professional & Timely.", author: "Vishal Patel" },
+  { text: "Transformed our finances.", author: "Jaydeep Tank" },
+  { text: "Highly recommended.", author: "Poojan Patel" },
+]
+
+export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  })
+
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"])
 
   return (
-    <div ref={containerRef} style={{ backgroundColor: '#ffffff', color: charcoal, fontFamily: 'system-ui, -apple-system, sans-serif', margin: 0, padding: 0 }}>
-      
-      {/* 1. HERO */}
-      <section style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: appleGrey, textAlign: 'center', padding: '0 24px' }}>
-        <div>
-          <div style={{ overflow: 'hidden', marginBottom: '20px' }}><p className="mask-reveal" style={{ color: gold, fontWeight: '900', letterSpacing: '0.5em', fontSize: '12px', textTransform: 'uppercase' }}>One Group. All Business Solutions.</p></div>
-          <div style={{ overflow: 'hidden' }}>
-            <h1 className="mask-reveal" style={{ fontSize: 'clamp(3rem, 12vw, 9rem)', fontWeight: '900', lineHeight: '0.8', letterSpacing: '-0.06em', marginBottom: '40px', background: `linear-gradient(135deg, ${gold}, ${charcoal})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Your Trusted<br/>Advisory Partner
-            </h1>
-          </div>
-          <p className="stagger-group" style={{ fontSize: '1.5rem', opacity: 0.4, fontWeight: '500', marginBottom: '60px' }}>Mortgage • Accounting • Legal • Real Estate • Commercial</p>
-          <button style={{ backgroundColor: charcoal, color: 'white', padding: '25px 60px', borderRadius: '100px', fontWeight: '900', fontSize: '18px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '15px', margin: '0 auto' }}>Explore Expertise <ArrowRight size={24} /></button>
-        </div>
-      </section>
+    <main className="bg-white overflow-x-hidden">
+      {/* HERO - White */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center px-6 py-32 md:px-12">
+        <motion.div
+          className="absolute inset-0 -z-10"
+          style={{ y: parallaxY }}
+        >
+          <Image
+            src="/images/hero.png"
+            alt="Premium abstract advisory environment, white minimal interior, soft daylight, glass and light shadows, Apple-style, trust-focused, editorial"
+            fill
+            className="object-cover opacity-25"
+            priority
+          />
+        </motion.div>
 
-      {/* 2. VISION */}
-      <section style={{ padding: '200px 24px', maxWidth: '1300px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '100px', alignItems: 'center' }}>
-        <div className="stagger-group">
-          <h2 style={{ fontSize: '4.5rem', fontWeight: '900', lineHeight: '1', marginBottom: '40px' }}>Advisory Services That Work Together.</h2>
-          <p style={{ fontSize: '1.4rem', lineHeight: '1.8', opacity: 0.6 }}>We integrate finance, legal, and property expertise to provide streamlined solutions under one roof.</p>
-        </div>
-        <div style={{ borderRadius: '80px', overflow: 'hidden', height: '650px', boxShadow: '0 50px 100px -20px rgba(0,0,0,0.1)' }}>
-          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Vision" />
-        </div>
-      </section>
-
-      {/* 3. QUICK STATS */}
-      <section style={{ margin: '0 30px', padding: '150px 24px', backgroundColor: charcoal, color: 'white', borderRadius: '100px', display: 'flex', justifyContent: 'center', gap: '100px', flexWrap: 'wrap' }}>
-        <div style={{ textAlign: 'center' }}><h3 style={{ fontSize: '7rem', fontWeight: '900', color: gold, margin: 0 }}><span className="counter" data-target="5">0</span>+</h3><p style={{ opacity: 0.3, letterSpacing: '0.4em', fontSize: '11px', fontWeight: '900' }}>YEARS EXCELLENCE</p></div>
-        <div style={{ textAlign: 'center' }}><h3 style={{ fontSize: '7rem', fontWeight: '900', color: gold, margin: 0 }}><span className="counter" data-target="12">0</span>+</h3><p style={{ opacity: 0.3, letterSpacing: '0.4em', fontSize: '11px', fontWeight: '900' }}>INDUSTRIES SERVED</p></div>
-        <div style={{ textAlign: 'center' }}><h3 style={{ fontSize: '7rem', fontWeight: '900', color: gold, margin: 0 }}>1</h3><p style={{ opacity: 0.3, letterSpacing: '0.4em', fontSize: '11px', fontWeight: '900' }}>UNIFIED PARTNER</p></div>
-      </section>
-
-      {/* 4. KEY VALUES TICKER */}
-      <div style={{ padding: '100px 0', borderY: '1px solid #eee', overflow: 'hidden' }}>
-        <div style={{ display: 'flex', gap: '80px', fontSize: '5rem', fontWeight: '900', opacity: 0.05, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
-           <span>Strategic Alignment ✱ Professional Guidance ✱ Holistic Vision ✱ Collaborative Solutions ✱ Future Pathways ✱</span>
-        </div>
-      </div>
-
-      {/* 5. ABOUT US */}
-      <section style={{ padding: '200px 24px', backgroundColor: appleGrey }}>
-        <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '5rem', fontWeight: '900', textAlign: 'center', marginBottom: '120px', lineHeight: '0.9' }}>A smarter way to manage your world</h2>
-          <div className="stagger-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
-            {["Proactive", "Responsive", "Data-driven", "Accountable"].map(f => (
-              <div key={f} style={{ backgroundColor: 'white', padding: '60px', borderRadius: '50px', textAlign: 'center' }}>
-                <CheckCircle2 size={50} style={{ color: gold, marginBottom: '30px' }} />
-                <h4 style={{ fontSize: '1.8rem', fontWeight: '900' }}>{f}</h4>
-              </div>
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h1
+            className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
+            {"One Group. All Business Solutions.".split(" ").map((word, i) => (
+              <motion.span key={i} variants={wordReveal} className="inline-block">
+                {word}{" "}
+              </motion.span>
             ))}
-          </div>
+          </motion.h1>
+
+          <motion.p
+            className="mt-6 text-2xl md:text-3xl text-charcoal-default"
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            Your Trusted Advisory Partner
+          </motion.p>
+
+          <motion.p
+            className="mt-3 text-xl text-charcoal-light"
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            Mortgage • Accounting • Legal • Real Estate • Commercial
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
+          >
+            <Link
+              href="/contact"
+              className="mt-10 inline-block px-10 py-5 bg-gold-default text-white font-medium rounded-full text-lg hover:bg-gold-dark transition-colors"
+            >
+              Explore Expertise
+            </Link>
+          </motion.div>
         </div>
       </section>
 
-      {/* 6. SERVICES OVERVIEW */}
-      <section style={{ padding: '200px 24px', maxWidth: '1400px', margin: '0 auto' }}>
-        <div className="stagger-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '40px' }}>
-          {SERVICES.map((s, i) => (
-            <div key={i} style={{ padding: '80px', backgroundColor: appleGrey, borderRadius: '60px' }}>
-              <div style={{ color: gold, marginBottom: '50px' }}>{s.i}</div>
-              <h4 style={{ opacity: 0.3, fontWeight: '900', marginBottom: '10px' }}>{s.n}</h4>
-              <h3 style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '25px' }}>{s.t}</h3>
-              <p style={{ opacity: 0.5, fontSize: '1.2rem' }}>{s.d}</p>
-            </div>
+      {/* INTEGRATED VISION - Gray 1 */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-grayLight"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeUpVariants}
+      >
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl md:text-6xl font-bold bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent"
+            variants={fadeUpVariants}
+          >
+            Advisory Services That Work Together for You
+          </motion.h2>
+
+          <motion.p
+            className="mt-10 text-xl max-w-4xl mx-auto text-charcoal-default"
+            variants={fadeUpVariants}
+          >
+            We integrate finance, legal, and property expertise to provide streamlined solutions under one roof, ensuring clear and efficient guidance every step of the way.
+          </motion.p>
+
+          <motion.div variants={fadeUpVariants} className="mt-16">
+            <Image
+              src="/images/integrated-vision.png"
+              alt="Wide architectural workspace, modern advisory meeting, minimal design, neutral palette, calm confidence"
+              width={1400}
+              height={800}
+              className="rounded-2xl w-full object-cover shadow-2xl"
+            />
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* QUICK STATS - Gray 2 */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-grayLight"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-16 text-center">
+          {[
+            { value: "5+", label: "Years" },
+            { value: "12+", label: "Industries" },
+            { value: "1", label: "Contact" },
+          ].map((stat, i) => (
+            <motion.div key={i} variants={fadeUpVariants}>
+              <div className="text-7xl font-bold text-gold-default">{stat.value}</div>
+              <p className="mt-4 text-2xl text-charcoal-default">{stat.label}</p>
+            </motion.div>
           ))}
         </div>
-      </section>
 
-      {/* 7. THE ADVANTAGE */}
-      <section style={{ margin: '0 30px', padding: '200px 24px', backgroundColor: charcoal, color: 'white', borderRadius: '100px' }}>
-        <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '5rem', fontWeight: '900', textAlign: 'center', marginBottom: '100px' }}>The Advantage</h2>
-          <div className="stagger-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '50px' }}>
-            {ADVANTAGES.map((adv, i) => (
-              <div key={i} style={{ padding: '70px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '60px' }}>
-                <h4 style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '25px', color: gold }}>{adv.n}</h4>
-                <h5 style={{ fontSize: '2rem', fontWeight: '900', marginBottom: '25px' }}>{adv.t}</h5>
-                <p style={{ opacity: 0.4, fontSize: '1.2rem' }}>{adv.d}</p>
-              </div>
+        <motion.div variants={fadeUpVariants} className="mt-20">
+          <Image
+            src="/images/quick-stats.png"
+            alt="Minimal infographic-style visuals, modern editorial style, light palette"
+            width={1400}
+            height={600}
+            className="mx-auto rounded-2xl"
+          />
+        </motion.div>
+      </motion.section>
+
+      {/* KEY VALUES - Gray 3 */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-grayLight"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto text-center">
+          {values.map((value, i) => (
+            <motion.p
+              key={i}
+              className="text-3xl md:text-5xl font-light text-charcoal-default my-6"
+              variants={fadeUpVariants}
+            >
+              {value}
+            </motion.p>
+          ))}
+        </div>
+
+        <motion.div variants={fadeUpVariants} className="mt-20">
+          <Image
+            src="/images/key-values.png"
+            alt="Abstract geometric shapes representing clarity, guidance, collaboration"
+            width={1400}
+            height={800}
+            className="rounded-2xl w-full object-cover"
+          />
+        </motion.div>
+      </motion.section>
+
+      {/* ABOUT / WHY - White */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.25 }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl md:text-6xl font-bold bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent"
+            variants={fadeUpVariants}
+          >
+            A smarter way to manage your world
+          </motion.h2>
+
+          <motion.p
+            className="mt-10 text-xl max-w-4xl mx-auto text-charcoal-default"
+            variants={fadeUpVariants}
+          >
+            Square Connect removes the burden of coordinating multiple professionals. Your dedicated advisor oversees the entire journey—bringing together finance, legal, tax and strategic partners.
+          </motion.p>
+
+          <motion.ul
+            className="mt-16 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left text-lg"
+            variants={staggerContainer}
+          >
+            {features.map((f, i) => (
+              <motion.li key={i} variants={fadeUpVariants} className="text-charcoal-default">
+                {f}
+              </motion.li>
             ))}
+          </motion.ul>
+
+          <motion.div variants={fadeUpVariants} className="mt-20">
+            <Image
+              src="/images/about-us.png"
+              alt="Human-focused advisory interaction, daylight, modern professional interior"
+              width={1400}
+              height={800}
+              className="rounded-2xl w-full object-cover"
+            />
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* SERVICES - White */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.h2
+            className="text-4xl md:text-6xl font-bold text-center bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent mb-20"
+            variants={fadeUpVariants}
+            initial="hidden"
+            whileInView="visible"
+          >
+            Our Services
+          </motion.h2>
+
+          <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-10"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {services.map((s) => (
+              <motion.div
+                key={s.num}
+                className="group bg-white p-10 rounded-2xl border border-transparent hover:border-gold-default hover:shadow-xl transition-all duration-500"
+                variants={fadeUpVariants}
+                whileHover={{ y: -12, transition: { duration: 0.4 } }}
+              >
+                <div className="text-2xl font-bold text-charcoal-default">
+                  {s.num} {s.title}
+                </div>
+                <p className="mt-4 text-charcoal-light">{s.desc}</p>
+                <div className="mt-6 h-0.5 bg-gold-default w-0 group-hover:w-full transition-all duration-500" />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <div className="text-center mt-16">
+            <Link
+              href="/contact"
+              className="inline-block px-10 py-5 bg-gold-default text-white font-medium rounded-full text-lg hover:bg-gold-dark transition-colors"
+            >
+              Start Conversation
+            </Link>
+          </div>
+
+          <motion.div variants={fadeUpVariants} className="mt-20">
+            <Image
+              src="/images/services-overview.png"
+              alt="Abstract symbolic visuals for finance, law, property, and digital services; minimal icons, editorial style, white background"
+              width={1400}
+              height={600}
+              className="mx-auto rounded-2xl"
+            />
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ADVANTAGE - White */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl md:text-6xl font-bold bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent"
+            variants={fadeUpVariants}
+          >
+            The Square Connect Advantage
+          </motion.h2>
+
+          <motion.ul className="mt-16 space-y-10 text-xl text-left max-w-4xl mx-auto">
+            {advantages.map((a, i) => (
+              <motion.li key={i} variants={fadeUpVariants}>
+                {a}
+              </motion.li>
+            ))}
+          </motion.ul>
+
+          <motion.div variants={fadeUpVariants} className="mt-20">
+            <Image
+              src="/images/the-advantage.png"
+              alt="Professional collaboration scene, modern minimal environment, calm confident feel"
+              width={1400}
+              height={800}
+              className="rounded-2xl w-full object-cover"
+            />
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* FOUNDER - White */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          <motion.div variants={fadeUpVariants}>
+            <Image
+              src="/images/founder-highlight.png"
+              alt="Professional founder portrait, natural light, neutral background, confident and approachable, editorial style"
+              width={800}
+              height={1000}
+              className="rounded-2xl shadow-2xl"
+            />
+          </motion.div>
+
+          <div>
+            <motion.h3
+              className="text-5xl font-bold text-charcoal-default"
+              variants={fadeUpVariants}
+            >
+              BHAVIN PATEL
+            </motion.h3>
+            <motion.p
+              className="mt-4 text-2xl text-charcoal-light"
+              variants={fadeUpVariants}
+            >
+              Founder & Lead Advisor
+            </motion.p>
+            <motion.p
+              className="mt-10 text-xl text-charcoal-default"
+              variants={fadeUpVariants}
+            >
+              With over 5 years of relentless drive and trusted expertise, Bhavin transforms complexity into clarity. "I founded Square Connect to revolutionise the way people build wealth."
+            </motion.p>
+
+            <motion.div variants={fadeUpVariants} className="mt-12">
+              <Link
+                href="/contact"
+                className="inline-block px-10 py-5 bg-gold-default text-white font-medium rounded-full text-lg hover:bg-gold-dark transition-colors"
+              >
+                Connect with Bhavin
+              </Link>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 8. FOUNDER HIGHLIGHT */}
-      <section style={{ padding: '200px 24px', maxWidth: '1300px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '120px', alignItems: 'center' }}>
-        <div style={{ borderRadius: '100px', overflow: 'hidden', height: '750px' }}>
-          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(1)' }} alt="Bhavin Patel" />
+      {/* INDUSTRIES - White */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl md:text-6xl font-bold bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent"
+            variants={fadeUpVariants}
+          >
+            Industries We Support
+          </motion.h2>
+
+          <motion.div
+            className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-8"
+            variants={staggerContainer}
+          >
+            {industries.map((ind, i) => (
+              <motion.div
+                key={i}
+                className="text-xl font-medium text-charcoal-default"
+                variants={fadeUpVariants}
+              >
+                {ind}
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div variants={fadeUpVariants} className="mt-20">
+            <Image
+              src="/images/sectors.png"
+              alt="Editorial flat-icons representing each industry, minimal, soft daylight"
+              width={1400}
+              height={600}
+              className="mx-auto rounded-2xl"
+            />
+          </motion.div>
         </div>
-        <div>
-          <p style={{ color: gold, fontWeight: '900', fontSize: '14px', letterSpacing: '0.6em', marginBottom: '40px' }}>FOUNDER & LEAD ADVISOR</p>
-          <h2 style={{ fontSize: '6rem', fontWeight: '900', marginBottom: '50px', lineHeight: '0.9' }}>BHAVIN PATEL</h2>
-          <p style={{ fontSize: '2.2rem', fontStyle: 'italic', opacity: 0.5, borderLeft: `8px solid ${gold}`, paddingLeft: '40px' }}>
-            "I founded Square Connect to revolutionise the way people build wealth."
+      </motion.section>
+
+      {/* TESTIMONIALS - White */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl md:text-6xl font-bold bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent"
+            variants={fadeUpVariants}
+          >
+            Client Testimonials
+          </motion.h2>
+
+          <motion.div
+            className="mt-16 space-y-16"
+            variants={staggerContainer}
+          >
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={i}
+                className="text-2xl md:text-3xl italic text-charcoal-default"
+                variants={fadeUpVariants}
+              >
+                “{t.text}”
+                <p className="mt-6 text-xl text-charcoal-light not-italic">
+                  — {t.author}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div variants={fadeUpVariants} className="mt-20">
+            <Image
+              src="/images/client-testimonials.png"
+              alt="Abstract happy clients, editorial style, warm daylight, soft focus"
+              width={1400}
+              height={600}
+              className="mx-auto rounded-2xl"
+            />
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* FINAL CTA - White */}
+      <motion.section
+        className="py-32 px-6 md:px-12 bg-white text-center"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUpVariants}
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.h2
+            className="text-4xl md:text-6xl font-bold bg-gradient-to-br from-gold-default to-charcoal-default bg-clip-text text-transparent"
+          >
+            Ready to Connect?
+          </motion.h2>
+
+          <motion.p className="mt-8 text-xl text-charcoal-default">
+            We’re here to help you navigate your financial and legal journey with confidence.
+          </motion.p>
+
+          <motion.div className="mt-12 space-y-4 text-lg text-charcoal-default">
+            <p>1644 Logan Road, Mount Gravatt QLD</p>
+            <p>0425 859 901</p>
+            <p>info@squareconnectgroup.com</p>
+          </motion.div>
+
+          <motion.div className="mt-16">
+            <Link
+              href="/contact"
+              className="inline-block px-12 py-6 bg-gold-default text-white font-medium rounded-full text-xl hover:bg-gold-dark transition-colors"
+            >
+              Get in Touch
+            </Link>
+          </motion.div>
+
+          <motion.div variants={fadeUpVariants} className="mt-20">
+            <Image
+              src="/images/call-to-action.png"
+              alt="Welcoming modern office entrance, daylight, approachable advisory atmosphere"
+              width={1400}
+              height={800}
+              className="rounded-2xl w-full object-cover"
+            />
+          </motion.div>
+        </div>
+
+        <footer className="mt-32 text-center text-charcoal-light text-sm">
+          <p>Your integrated partner for growth</p>
+          <p className="mt-4 max-w-4xl mx-auto">
+            Legal Notice: Square Connect Advisory Group operates as a strategic advisory and referral consultancy. We do not hold an ACL or AFSL in our own right.
           </p>
-        </div>
-      </section>
-
-      {/* 9. SECTORS */}
-      <section style={{ padding: '150px 24px', textAlign: 'center', opacity: 0.2 }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '80px', fontWeight: '900', fontSize: '2rem', textTransform: 'uppercase' }}>
-          {["Childcare", "Medical", "NDIS", "Construction", "Real Estate", "Tech", "Retail"].map(s => <span key={s}>{s}</span>)}
-        </div>
-      </section>
-
-      {/* 10. TESTIMONIALS */}
-      <section style={{ padding: '200px 24px', maxWidth: '1300px', margin: '0 auto' }}>
-        <h2 style={{ fontSize: '5rem', fontWeight: '900', textAlign: 'center', marginBottom: '120px' }}>Trusted Feedback</h2>
-        <div className="stagger-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '50px' }}>
-          {["Omkar Solanki", "Harshad Pathan", "Vishal Patel", "Jaydeep Tank", "Poojan Patel"].map(n => (
-            <div key={n} style={{ padding: '80px', backgroundColor: appleGrey, borderRadius: '60px' }}>
-              <Star style={{ color: gold, marginBottom: '40px' }} fill={gold} size={25} />
-              <p style={{ fontSize: '1.5rem', fontWeight: '900', marginBottom: '40px', lineHeight: '1.4' }}>"Professional & timely... highly recommended."</p>
-              <p style={{ fontWeight: '900', opacity: 0.3, fontSize: '12px' }}>— {n}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 11. FOOTER */}
-      <footer style={{ padding: '200px 24px', backgroundColor: appleGrey, borderRadius: '120px 120px 0 0', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 'clamp(4rem, 15vw, 12rem)', fontWeight: '900', marginBottom: '100px', letterSpacing: '-0.06em' }}>Ready to Connect?</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '100px', marginBottom: '150px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '2rem', fontWeight: '900' }}><Phone style={{ color: gold }} size={32} /> 0425 859 901</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '2rem', fontWeight: '900' }}><Mail style={{ color: gold }} size={32} /> info@squareconnectgroup.com</div>
-        </div>
-        <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '80px', textAlign: 'left', maxWidth: '1300px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', opacity: 0.3, fontSize: '11px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.3em' }}>
-            <div>Square Connect Advisory Group © 2026 | 1644 Logan Road, Mount Gravatt QLD</div>
-            <div style={{ maxWidth: '450px' }}>Legal Notice: Strategic advisory and referral consultancy. Not an ACL or AFSL holder.</div>
-        </div>
-      </footer>
-
-    </div>
-  );
+        </footer>
+      </motion.section>
+    </main>
+  )
 }
